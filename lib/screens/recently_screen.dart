@@ -34,8 +34,8 @@ class RecentlyScreen extends StatelessWidget {
             tabs: const [
               // Tab icons using Spotify-inspired icons
               Tab(icon: Icon(Icons.library_music_outlined)), // Library
-              Tab(icon: Icon(Icons.history)), // Recently Played
-              Tab(icon: Icon(Icons.explore)), // Just For You
+              Tab(icon: Icon(Icons.art_track)), // Recently Played
+              Tab(icon: Icon(Icons.album_outlined)), // Just For You
             ],
           ),
         ),

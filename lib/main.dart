@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/components/asset_image_rounded.dart';
 import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
-import 'package:my_app/screens/qq.dart';
+import 'package:my_app/screens/recently_screen.dart';
 import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
 import 'package:my_app/screens/setting_screen.dart';
 import 'package:my_app/screens/profile_screen.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Home Screen'),
       routes: {
-        '/custom-screen': (context) => const QqScreen(),
+        '/custom-screen': (context) => const RecentlyScreen(),
         '/second-screen': (context) => const SecondScreen(),
         '/new-screen': (context) => const NewsScreen(),
       },

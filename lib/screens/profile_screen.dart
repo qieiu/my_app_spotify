@@ -1,55 +1,242 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/screens/detail_album.dart';
+import 'package:my_app/screens/recently_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  void goToAnotherRoute(context, screen) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
+
+  static const List<String> genres = [
+    'Pop',
+    'Rock',
+    'Hip Hop',
+    'Jazz',
+    'Country',
+    'EDM',
+    'R&B',
+    'Reggae',
+    'Blues',
+    'Kpop',
+  ];
+
+  static const List<String> artistNames = [
+    'BTS',
+    'Arctic Monkeys',
+    'DPR IAN',
+    'Reality Club',
+  ];
+  // Define image assets 
+  static const List<String> imagePaths = [
+    'assets/images/DarkWild.jpg',
+    'assets/images/FavouriteWorstNightmare.jpg',
+    'assets/images/MoodswingsInThisOrder.jpg',
+    'assets/images/AnythingYouWant.jpg',
+  ];
+
+  // Sample album names 
+  static const List<String> albumNames = [
+    'Dark Wild',
+    'Favourite Worst Nightmare',
+    'Moodswings In This Order',
+    'Anything You Want'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Profile'), // Customize app bar title
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () => Scaffold.of(context).openDrawer(), // Access drawer using Scaffold.of(context)
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white, // Spotify theme - white background
+          bottom: TabBar(
+            tabs: const [
+              // Tab icons using Spotify-inspired icons
+              Tab(icon: Icon(Icons.library_music_outlined)), // Placeholder
+              Tab(icon: Icon(Icons.history)), // Recently Played
+              Tab(icon: Icon(Icons.explore)), // Just For You
+            ],
+          ),
         ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        body: TabBarView(
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'User Name',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.0,
+            // Display four images in two rows with spacing and album names
+            ListView(
+              // Use ListView for scrollable content if needed
+              children: [
+                Row(
+                  children: List.generate(
+                    2, // Generate two items for the first row
+                    (index) => Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(
+                            8.0), // Add margin between items
+                        child: Column(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 1.0, // Make image square
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Add rounded corners
+                                child: Image.asset(
+                                  imagePaths[index],
+                                  fit: BoxFit.cover, // Fill the container
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                                height:
+                                    4.0), // Add space between image and text
+                            Text(
+                              albumNames[index],
+                              textAlign: TextAlign.center, // Center album name
+                              style: const TextStyle(
+                                  fontSize: 12.0), // Adjust font size and style
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 8.0), // Add space between rows
+                Row(
+                  children: List.generate(
+                    // Ensure we don't exceed image list length
+                    imagePaths.length > 2 ? 2 : imagePaths.length,
+                    (index) => Expanded(
+                      child: GestureDetector(
+                        // Wrap the third image with GestureDetector
+                        onTap: () {
+                          if (imagePaths.length > 2) {
+                            // Navigate to QqScreen using your goToAnotherRoute function
+                            goToAnotherRoute(context, const RecentlyScreen());
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.all(
+                              8.0), // Add margin between items
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailScreen()));
+                                },
+                                child: AspectRatio(
+                                  aspectRatio:
+                                      1.0, // Buat gambar menjadi persegi
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        8.0), // Tambahkan sudut bulat
+                                    child: Image.asset(
+                                      imagePaths[index +
+                                          2], // Gunakan index + 1 untuk gambar ketiga
+                                      fit: BoxFit.cover, // Isi kontainer
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                  height:
+                                      4.0), // Add space between image and text
+                              Text(
+                                imagePaths.length > 2
+                                    ? albumNames[index + 2]
+                                    : '', // Access album name only if there are 4 images
+                                textAlign:
+                                    TextAlign.center, // Center album name
+                                style: const TextStyle(
+                                    fontSize:
+                                        12.0), // Adjust font size and style
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 30, 10, 5),
+                  child: Text(
+                    'Recently Played',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(10),
+                    itemCount: imagePaths.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.asset(
+                            imagePaths[index],
+                            fit: BoxFit.cover,
+                            width: 50.0,
+                            height:
+                                50.0, // Sesuaikan dimensi gambar sesuai kebutuhan
+                          ),
+                        ),
+                        title: Text(
+                          albumNames[index],
+                          style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight:
+                                  FontWeight.bold), // Sesuaikan ukuran font
+                        ),
+                        subtitle: Text(
+                          artistNames[index],
+                          style: const TextStyle(
+                              fontSize: 14.0, color: Colors.grey),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Jumlah kolom
+                childAspectRatio: 2, // Rasio aspek item (lebar/tinggi)
               ),
-            ),
-            ListTile(
-              title: Text('Home'),
-              onTap: () {
-                // Navigate to home screen
-                Navigator.pop(context); // Close the drawer
-                // Your navigation code for home screen
-              },
-            ),
-            ListTile(
-              title: Text('Settings'),
-              onTap: () {
-                // Navigate to settings screen
-                Navigator.pop(context); // Close the drawer
-                // Your navigation code for settings screen
+              itemCount: genres.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  margin: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      genres[index],
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           ],
         ),
-      ),
-      body: Center(
-        child: Text('This is the main content of your profile'), // Customize profile content
       ),
     );
   }
