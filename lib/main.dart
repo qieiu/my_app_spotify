@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/components/asset_image_rounded.dart';
 import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/qq.dart';
@@ -70,18 +71,26 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: const [
+          children: [
             UserAccountsDrawerHeader(
-              accountName: Text('User'),
-              accountEmail: Text('user@example.com'),
+              accountName: Text('Pingu'),
+              accountEmail: Text('pingu@secret.com'),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(Icons.person),
+                child: AssetImageRounded(imagePath: 'assets/images/pingu.jpg'),
               ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
             ),
+            ListTile(
+              leading: Icon(Icons.attach_file),
+              title: Text(
+                'Assignment 7: API',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/new-screen'),
+            )
           ],
         ),
       ),
