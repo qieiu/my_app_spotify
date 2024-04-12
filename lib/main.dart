@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show AppBar, BottomNavigationBar, BottomNavigationBarItem, BoxDecoration, BuildContext, Colors, Drawer, DrawerHeader, EdgeInsets, Icon, Icons, Key, ListView, MaterialApp, Scaffold, State, StatefulWidget, StatelessWidget, Text, ThemeData, Widget, runApp;
+import 'package:flutter/material.dart';
 import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/qq.dart';
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/custom-screen': (context) => const QqScreen(),
         '/second-screen': (context) => const SecondScreen(),
-        '/new-screen':(context) => const NewsScreen(),  
-        },
+        '/new-screen': (context) => const NewsScreen(),
+      },
     );
   }
 }
@@ -43,10 +43,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const SettingScreen(),
-    const ProfileScreen(),
+  final List<Widget> _screens = const [
+    HomeScreen(),
+    SettingScreen(),
+    ProfileScreen(),
   ];
 
   final List<String> _appBarTitles = const [
@@ -67,18 +67,24 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(_appBarTitles[_selectedIndex]),
       ),
-    );
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
+          children: const [
+            UserAccountsDrawerHeader(
+              accountName: Text('User'),
+              accountEmail: Text('user@example.com'),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person),
+              ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text('Drawer Header'),
-            )],
-        )
+            ),
+          ],
+        ),
+      ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
