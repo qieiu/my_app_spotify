@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show AppBar, BottomNavigationBar, BottomNavigationBarItem, BuildContext, Colors, Icon, Icons, Key, MaterialApp, Scaffold, State, StatefulWidget, StatelessWidget, Text, ThemeData, Widget, runApp;
+import 'package:flutter/material.dart' show AppBar, BottomNavigationBar, BottomNavigationBarItem, BoxDecoration, BuildContext, Colors, Drawer, DrawerHeader, EdgeInsets, Icon, Icons, Key, ListView, MaterialApp, Scaffold, State, StatefulWidget, StatelessWidget, Text, ThemeData, Widget, runApp;
 import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/qq.dart';
@@ -67,6 +67,18 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(_appBarTitles[_selectedIndex]),
       ),
+    );
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            )],
+        )
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
