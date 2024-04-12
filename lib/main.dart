@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/second-screen': (context) => const SecondScreen(),
         '/new-screen': (context) => const NewsScreen(),
         '/book-screen': (context) => const BooksScreen(),
+
       },
     );
   }
