@@ -3,6 +3,7 @@ import 'package:my_app/components/asset_image_rounded.dart';
 import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/recently_screen.dart';
+import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
 import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
 import 'package:my_app/screens/setting_screen.dart';
 import 'package:my_app/screens/profile_screen.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/custom-screen': (context) => const RecentlyScreen(),
         '/second-screen': (context) => const SecondScreen(),
         '/new-screen': (context) => const NewsScreen(),
+        '/book-screen': (context) => const BooksScreen(),
       },
     );
   }
@@ -90,6 +92,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               onTap: () => Navigator.pushNamed(context, '/new-screen'),
+            ),
+            ListTile(
+              leading: Icon(Icons.attach_file),
+              title: Text(
+                'Add To Liked Songs',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/book-screen'),
             )
           ],
         ),

@@ -172,13 +172,6 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25, 30, 10, 5),
-                  child: Text(
-                    'Recently Played',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ),
                 Expanded(
                   child: ListView.builder(
