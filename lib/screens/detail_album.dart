@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+  const DetailScreen({super.key});
 
    // Define song data (replace with your actual data)
   static const List<String> songTitles = [

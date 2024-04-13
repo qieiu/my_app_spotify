@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:my_app/dto/News.dart';
+import 'package:my_app/dto/news.dart';
 import 'package:my_app/endpoints/endpoints.dart';
 
 

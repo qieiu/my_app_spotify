@@ -4,7 +4,7 @@ import 'package:my_app/components/asset_image_widget.dart';
 import 'package:my_app/components/text_container.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

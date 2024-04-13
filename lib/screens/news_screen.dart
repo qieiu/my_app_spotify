@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/dto/News.dart';
+import 'package:my_app/dto/news.dart';
 import 'package:my_app/services/data_services.dart';
 
 class NewsScreen extends StatefulWidget {
-  const NewsScreen({Key? key}) : super(key: key);
+  const NewsScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _NewsScreenState createState() => _NewsScreenState();
 }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RecentlyScreen extends StatelessWidget {
-  const RecentlyScreen({Key? key}) : super(key: key);
+  const RecentlyScreen({super.key});
 
   // Define image assets (replace with your actual image paths)
   static const List<String> imagePaths = [
@@ -30,8 +30,8 @@ class RecentlyScreen extends StatelessWidget {
             'Spotify', // App title
             style: TextStyle(color: Colors.black), // White text for title
           ),
-          bottom: TabBar(
-            tabs: const [
+          bottom: const TabBar(
+            tabs: [
               // Tab icons using Spotify-inspired icons
               Tab(icon: Icon(Icons.library_music_outlined)), // Library
               Tab(icon: Icon(Icons.art_track)), // Recently Played
@@ -43,7 +43,7 @@ class RecentlyScreen extends StatelessWidget {
           children: [
             // Display recently played albums with images and titles using ListView.builder
             ListView.builder(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               itemCount: imagePaths.length,
               itemBuilder: (context, index) {
                 return ListTile(
