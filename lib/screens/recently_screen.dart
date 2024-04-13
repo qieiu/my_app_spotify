@@ -14,7 +14,7 @@ class RecentlyScreen extends StatelessWidget {
   // Sample album names (replace with actual data)
   static const List<String> albumNames = [
     'Dark Wild',
-    'Favourite Worst Nightmare',
+    'Nerves',
     'Moodswings InThisOrder',
     'Anything You Want',
   ];

@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white, // Spotify theme - white background
+          backgroundColor: Colors.white, // Spotify theme 
           bottom: const TabBar(
             tabs: [
               // Tab icons using Spotify-inspired icons
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                         // Wrap the third image with GestureDetector
                         onTap: () {
                           if (imagePaths.length > 2) {
-                            // Navigate to QqScreen using your goToAnotherRoute function
+                            // Navigate to detail_album using your goToAnotherRoute function
                             goToAnotherRoute(context, const RecentlyScreen());
                           }
                         },
