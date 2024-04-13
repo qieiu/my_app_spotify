@@ -8,12 +8,13 @@ import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
 import 'package:my_app/screens/setting_screen.dart';
 import 'package:my_app/screens/profile_screen.dart';
 
+
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -75,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               accountName: Text('Pingu'),
               accountEmail: Text('pingu@secret.com'),
               currentAccountPicture: CircleAvatar(
@@ -83,20 +84,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: AssetImageRounded(imagePath: 'assets/images/pingu.jpg'),
               ),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 64, 133, 190),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.attach_file),
-              title: Text(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
                 'Assignment 7: API',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               onTap: () => Navigator.pushNamed(context, '/new-screen'),
             ),
             ListTile(
-              leading: Icon(Icons.attach_file),
-              title: Text(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
                 'Add To Liked Songs',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/screens/detail_album.dart';
 import 'package:my_app/screens/recently_screen.dart';
-import 'package:my_app/services/db_helper.dart';
-import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -60,8 +59,8 @@ class ProfileScreen extends StatelessWidget {
             tabs: [
               // Tab icons using Spotify-inspired icons
               Tab(icon: Icon(Icons.library_music_outlined)), // Placeholder
-              Tab(icon: Icon(Icons.history)), // Recently Played
-              Tab(icon: Icon(Icons.explore)), // Just For You
+              Tab(icon: Icon(Icons.play_circle)), // Recently Played
+              Tab(icon: Icon(Icons.album)), // Just For You
             ],
           ),
         ),

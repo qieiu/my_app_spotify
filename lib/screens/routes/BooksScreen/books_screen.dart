@@ -100,16 +100,16 @@ class _BooksScreenState extends State<BooksScreen> {
                   color: !isUpdate ? Colors.purple : Colors.blue,
                   width: 2,
                   style: BorderStyle.solid)),
-          labelText: !isUpdate ? 'Add Book Title' : 'Edit Book Title',
+          labelText: !isUpdate ? 'Add Song Title' : 'Edit Song Title',
           icon:
-              Icon(Icons.book, color: !isUpdate ? Colors.purple : Colors.blue),
+              Icon(Icons.lyrics, color: !isUpdate ? Colors.purple : Colors.blue),
           fillColor: Colors.white,
           labelStyle:
               TextStyle(color: !isUpdate ? Colors.purple : Colors.blue)),
     );
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Books'), // Set the app bar title
+          title: const Text('Songs'), // Set the app bar title
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
