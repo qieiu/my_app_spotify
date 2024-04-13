@@ -4,7 +4,7 @@ import 'package:my_app/services/db_helper.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class BooksScreen extends StatefulWidget {
-    const BooksScreen({super.key});
+  const BooksScreen({super.key});
 
   @override
   State<BooksScreen> createState() => _BooksScreenState();
@@ -108,63 +108,71 @@ class _BooksScreenState extends State<BooksScreen> {
               TextStyle(color: !isUpdate ? Colors.purple : Colors.blue)),
     );
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Form(
-            key: _formStateKey,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: textFormField,
-                ),
-              ],
-            )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  createOrUpdateBooks();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: !isUpdate
-                      ? Colors.purple
-                      : Colors.blue, // Set background color
-                  foregroundColor: Colors.white,
-                ),
-                child: !isUpdate ? const Text('Save') : const Text('Update')),
-            const SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  cancelTextEditing();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange, // Set background color
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Cancel')),
-          ],
+        appBar: AppBar(
+          title: const Text('Books'), // Set the app bar title
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-        const Divider(),
-        Expanded(
-            child: FutureBuilder(
-          future: books,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Text('No Data');
-            }
-            if (snapshot.hasData) {
-              return generateList(snapshot.data!);
-            }
-            return const CircularProgressIndicator();
-          },
-        ))
-      ],
-    ));
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Form(
+                key: _formStateKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: textFormField,
+                    ),
+                  ],
+                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      createOrUpdateBooks();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: !isUpdate
+                          ? Colors.purple
+                          : Colors.blue, // Set background color
+                      foregroundColor: Colors.white,
+                    ),
+                    child:
+                        !isUpdate ? const Text('Save') : const Text('Update')),
+                const SizedBox(
+                  width: 10,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      cancelTextEditing();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange, // Set background color
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('Cancel')),
+              ],
+            ),
+            const Divider(),
+            Expanded(
+                child: FutureBuilder(
+              future: books,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Text('No Data');
+                }
+                if (snapshot.hasData) {
+                  return generateList(snapshot.data!);
+                }
+                return const CircularProgressIndicator();
+              },
+            ))
+          ],
+        ));
   }
 
   Widget generateList(List<Books> books) {

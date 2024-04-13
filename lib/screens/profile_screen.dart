@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/screens/detail_album.dart';
 import 'package:my_app/screens/recently_screen.dart';
+import 'package:my_app/services/db_helper.dart';
+import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   void goToAnotherRoute(context, screen) {
     Navigator.push(
@@ -54,8 +56,8 @@ class ProfileScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white, // Spotify theme - white background
-          bottom: TabBar(
-            tabs: const [
+          bottom: const TabBar(
+            tabs: [
               // Tab icons using Spotify-inspired icons
               Tab(icon: Icon(Icons.library_music_outlined)), // Placeholder
               Tab(icon: Icon(Icons.history)), // Recently Played
@@ -129,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              DetailScreen()));
+                                              const DetailScreen()));
                                 },
                                 child: AspectRatio(
                                   aspectRatio:
@@ -170,12 +172,12 @@ class ProfileScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 30, 10, 5),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(25, 30, 10, 5),
                 ),
                 Expanded(
                   child: ListView.builder(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     itemCount: imagePaths.length,
                     itemBuilder: (context, index) {
                       return ListTile(
@@ -208,18 +210,18 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
             GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // Jumlah kolom
                 childAspectRatio: 2, // Rasio aspek item (lebar/tinggi)
               ),
               itemCount: genres.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                  margin: EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
                       genres[index],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
