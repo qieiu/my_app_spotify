@@ -4,9 +4,11 @@ import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/recently_screen.dart';
 import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
+import 'package:my_app/screens/routes/DatasScreen/datas_screen.dart';
 import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
 import 'package:my_app/screens/setting_screen.dart';
 import 'package:my_app/screens/profile_screen.dart';
+
 
 
 void main() {
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/second-screen': (context) => const SecondScreen(),
         '/new-screen': (context) => const NewsScreen(),
         '/book-screen': (context) => const BooksScreen(),
+        '/data-screen':(context) => const DatasScreen(),
 
       },
     );
@@ -102,6 +105,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               onTap: () => Navigator.pushNamed(context, '/book-screen'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
+                'Data Screen',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/data-screen'),
             )
           ],
         ),
