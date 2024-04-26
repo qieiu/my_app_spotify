@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/components/asset_image_rounded.dart';
-import 'package:my_app/screens/home_screen.dart';
+import 'package:my_app/screens/recap_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/recently_screen.dart';
 import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
 import 'package:my_app/screens/routes/DatasScreen/datas_screen.dart';
 import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
-import 'package:my_app/screens/setting_screen.dart';
-import 'package:my_app/screens/profile_screen.dart';
+import 'package:my_app/screens/premium_screen.dart';
+import 'package:my_app/screens/album_screen.dart';
 
 
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: const MyHomePage(title: 'Home Screen'),
       routes: {
@@ -52,15 +52,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = const [
-    HomeScreen(),
-    SettingScreen(),
-    ProfileScreen(),
+    RecapScreen(),
+    PremiumScreen(),
+    AlbumScreen(),
   ];
 
   final List<String> _appBarTitles = const [
-    'Home',
-    'Settings',
-    'Qietify',
+    'Qietify Recap',
+    'Qietify Premium',
+    'Qietify Album',
   ]; // List of titles corresponding to each screen
 
   void _onItemTapped(int index) {
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: AssetImageRounded(imagePath: 'assets/images/pingu.jpg'),
               ),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 64, 133, 190),
+                color: Colors.indigo,
               ),
             ),
             ListTile(
@@ -121,16 +121,16 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.cruelty_free),
+            label: 'Recap',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.confirmation_num),
+            label: 'Premium',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.contactless_rounded),
+            label: 'Album',
           ),
         ],
         currentIndex: _selectedIndex,

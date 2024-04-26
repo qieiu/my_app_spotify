@@ -3,8 +3,8 @@ import 'package:my_app/screens/detail_album.dart';
 import 'package:my_app/screens/recently_screen.dart';
 
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class AlbumScreen extends StatelessWidget {
+  const AlbumScreen({super.key});
 
   void goToAnotherRoute(context, screen) {
     Navigator.push(
