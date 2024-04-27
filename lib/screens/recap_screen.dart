@@ -63,7 +63,7 @@ class RecapScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Column( // List top songs 
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('1. Fire - BTS'),
                       Text('2. Drama - Aespa'),
@@ -77,7 +77,6 @@ class RecapScreen extends StatelessWidget {
                       Text('10. Thats Why You Go Away - Michael Learns To Rock'),
                     ],
                   ),
-                  // Add more sections for stats and interactive buttons following similar structure
                 ],
               ),
             ),
