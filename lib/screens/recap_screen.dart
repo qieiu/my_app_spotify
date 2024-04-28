@@ -20,7 +20,7 @@ class RecapScreen extends StatelessWidget {
             Stack( // Stack banner with button on top
               children: [
                 Image.asset(
-                  'assets/images/wrapped.jpg', // Replace with your banner image
+                  'assets/images/wrapped.jpg', 
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -41,7 +41,7 @@ class RecapScreen extends StatelessWidget {
                     // Display top artists with icons 
                     children: [
                       CircleAvatar(
-                        radius: 50.0, // Adjust radius for desired size (default is 40.0)
+                        radius: 50.0, // Adjust radius for desired size 
                         backgroundImage: AssetImage('assets/images/BTS.jpg'),
                       ),
                       SizedBox(width: 10),

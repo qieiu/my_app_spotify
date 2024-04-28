@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/components/bottom_up_transition.dart';
 import 'package:my_app/dto/data_screen.dart';
 import 'package:my_app/endpoints/endpoints.dart';
+import 'package:my_app/screens/edit_form_screen.dart';
 import 'package:my_app/screens/routes/FormsScreen/form_screen.dart';
 import 'package:my_app/services/data_services.dart';
 
@@ -64,15 +65,39 @@ class _DatasScreenState extends State<DatasScreen> {
                           ],
                         )
                       : null,
-                  subtitle: Column(children: [
-                    Text('Name : ${item.name}',
+                  subtitle: Column(
+                    children: [
+                      Text(
+                        'Name : ${item.name}',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: const Color.fromARGB(255, 36, 31, 31),
                           fontWeight: FontWeight.normal,
-                        )),
-                    const Divider()
-                  ]),
+                        ),
+                      ),
+                      const Divider(),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              _showDeleteConfirmationDialog(context, item);
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FormUpdateScreen(objek: item)));
+                            },
+                            icon: Icon(Icons.edit),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 );
               },
             );
@@ -92,6 +117,36 @@ class _DatasScreenState extends State<DatasScreen> {
         },
         child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, Datas datas) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete Confirmation"),
+          content: Text("Are you sure you want to delete ${datas.name}?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("CANCEL"),
+            ),
+            TextButton(
+              onPressed: () {
+                // Delete the data and update the UI
+                DataService.deleteDatas(datas
+                    .idDatas); // Assuming you have a delete method in DataService
+                setState(() {
+                  _datas = DataService.fetchDatas();
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("DELETE"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

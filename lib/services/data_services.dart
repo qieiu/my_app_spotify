@@ -17,7 +17,29 @@ class DataService {
       throw Exception('Failed to load news');
       }
   }
-   static Future<List<Datas>> fetchDatas() async {
+  static Future<void> sendNews(String title, String body) async {
+    Map<String, String> newsData = {
+      "title": title,
+      "body": body,
+    };
+    String jsonData = jsonEncode(newsData);
+    await http.post(Uri.parse(Endpoints.news),
+        body: jsonData, headers: {'Content-Type': 'application/json'});
+  }
+
+  static Future<void> deleteData(String id) async {
+    await http.delete(Uri.parse('${Endpoints.news}/$id'),
+        headers: {'Content-type': 'application/json'});
+  }
+
+  static Future<void> updateData(String id, String title, String body) async {
+    Map<String, String> data = {"id": id, "title": title, "body": body};
+    String jsonData = jsonEncode(data);
+    await http.put(Uri.parse('${Endpoints.news}/$id'),
+        body: jsonData, headers: {'Content-type': 'application/json'});
+  }
+
+  static Future<List<Datas>> fetchDatas() async {
     final response = await http.get(Uri.parse(Endpoints.datas));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -28,5 +50,17 @@ class DataService {
       // Handle error
       throw Exception('Failed to load data');
     }
+  } //coba lagi
+
+  static Future<void> deleteDatas(int id) async {
+    await http.delete(Uri.parse('${Endpoints.datas}/$id'),
+        headers: {'Content-type': 'aplication/json'});
+  }
+
+  static Future<void> updateDatas(String id, String title, String body) async {
+    Map<String, String> data = {"id": id, "title": title, "body": body};
+    String jsonData = jsonEncode(data);
+    await http.put(Uri.parse('${Endpoints.datas}/$id'),
+        body: jsonData, headers: {'Content-type': 'application/json'});
   }
 }

@@ -15,7 +15,7 @@ class UpgradeSuccessScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.check_circle,
-              color: Colors.green,
+              color: Colors.indigo,
               size: 80.0,
             ),
             SizedBox(height: 20),
