@@ -27,4 +27,8 @@ class Datas {
           : null,
     );
   }
+
+  get description => null;
+
+  get rating => null;
 }

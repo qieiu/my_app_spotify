@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/components/bottom_up_transition.dart';
 import 'package:my_app/dto/data_screen.dart';
 import 'package:my_app/endpoints/endpoints.dart';
-import 'package:my_app/screens/edit_form_screen.dart';
 import 'package:my_app/screens/routes/FormsScreen/form_screen.dart';
 import 'package:my_app/services/data_services.dart';
 
@@ -16,6 +15,14 @@ class DatasScreen extends StatefulWidget {
 
 class _DatasScreenState extends State<DatasScreen> {
   Future<List<Datas>>? _datas;
+
+  // static Future<void> deleteDatas(int idDatas) async {
+  //   final url = Uri.parse('${Endpoints.datas}/$idDatas');
+  //   final response = await http.delete(url);
+  //   if (response.statusCode != 200) {
+  //     throw Exception('Failed to delete data');
+  //   }
+  // }
 
   @override
   void initState() {
@@ -49,55 +56,87 @@ class _DatasScreenState extends State<DatasScreen> {
               itemBuilder: (context, index) {
                 final item = data[index];
                 return ListTile(
-                  title: item.imageUrl != null
-                      ? Row(
-                          children: [
-                            Image.network(
-                              fit: BoxFit.fitWidth,
-                              width: 350,
-                              Uri.parse(
-                                      '${Endpoints.baseURLLive}/public/${item.imageUrl!}')
-                                  .toString(),
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons
-                                      .error), // Display error icon if image fails to load
-                            ),
-                          ],
-                        )
-                      : null,
-                  subtitle: Column(
-                    children: [
-                      Text(
-                        'Name : ${item.name}',
+                  title: Column(children: [
+                    Text('Name : ${item.name}',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: const Color.fromARGB(255, 36, 31, 31),
                           fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      const Divider(),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              _showDeleteConfirmationDialog(context, item);
-                            },
-                            icon: Icon(Icons.delete),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FormUpdateScreen(objek: item)));
-                            },
-                            icon: Icon(Icons.edit),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                        )),
+                    const Divider()
+                  ]),
+                  subtitle: item.imageUrl != null
+                      ? Column(
+                          children: [
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    fit: BoxFit.fitWidth,
+                                    width: 350,
+                                    Uri.parse(
+                                            '${Endpoints.baseURLLive}/public/${item.imageUrl!}')
+                                        .toString(),
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        const Icon(Icons
+                                            .error), // Display error icon if image fails to load
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                                // IconButton(
+                                //     onPressed: () {}, icon: Icon(Icons.edit)),
+                                // IconButton(
+                                //     onPressed: () {
+                                //       showDialog(
+                                //           context: context,
+                                //           builder: (BuildContext context) {
+                                //             return AlertDialog(
+                                //               title: Text('Konfirmasi'),
+                                //               content: Text(
+                                //                   'Apakah yakin ingin menghapus?'),
+                                //               actions: <Widget>[
+                                //                 TextButton(
+                                //                   onPressed: () =>
+                                //                       Navigator.pop(context),
+                                //                   child: Text('Cancel'),
+                                //                 ),
+                                //                 TextButton(
+                                //                   child: Text('Delete'),
+                                //                   onPressed: () async {
+                                //                     try {
+                                //                       // int idDatas =
+                                //                       //     data[index].idDatas;
+                                //                       await deleteDatas(
+                                //                           data[index].idDatas);
+                                //                       ScaffoldMessenger.of(
+                                //                               context)
+                                //                           .showSnackBar(
+                                //                         SnackBar(
+                                //                           content: Text(
+                                //                               'Delete Sucessfully'),
+                                //                         ),
+                                //                       );
+                                //                     } catch (e) {
+                                //                       print('Error: $e');
+                                //                     }
+                                //                   },
+                                //                 )
+                                //               ],
+                                //             );
+                                //           });
+                                //     },
+                                //     icon: Icon(Icons.delete))
+                            //   ],
+                            // )
+                          ],
+                        )
+                      : null,
                 );
               },
             );
@@ -117,36 +156,6 @@ class _DatasScreenState extends State<DatasScreen> {
         },
         child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),
-    );
-  }
-
-  void _showDeleteConfirmationDialog(BuildContext context, Datas datas) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Delete Confirmation"),
-          content: Text("Are you sure you want to delete ${datas.name}?"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text("CANCEL"),
-            ),
-            TextButton(
-              onPressed: () {
-                // Delete the data and update the UI
-                DataService.deleteDatas(datas
-                    .idDatas); // Assuming you have a delete method in DataService
-                setState(() {
-                  _datas = DataService.fetchDatas();
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text("DELETE"),
-            ),
-          ],
-        );
-      },
     );
   }
 }

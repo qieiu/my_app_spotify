@@ -1,37 +1,28 @@
-// ignore_for_file: library_private_types_in_public_api
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_app/dto/data_screen.dart';
-// import 'package:my_app/dto/issues.dart';
 import 'package:my_app/endpoints/endpoints.dart';
-import 'package:my_app/screens/routes/DatasScreen/datas_screen.dart';
-// import 'package:my_app/screens/APIbaru.dart';
 
-class FormUpdateScreen extends StatefulWidget {
-  const FormUpdateScreen({Key? key, required this.objek}) : super(key: key);
-
-  final Datas objek;
+class CustFormScreen extends StatefulWidget {
+  const CustFormScreen({Key? key}) : super(key: key);
 
   @override
-  _FormUpdateScreenState createState() => _FormUpdateScreenState();
+  _FormScreenState createState() => _FormScreenState();
 }
 
-
-class _FormUpdateScreenState extends State<FormUpdateScreen> {
+class _FormScreenState extends State<CustFormScreen> {
   final _titleController = TextEditingController();
+  final _ratingController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
   String _title = "";
+  String _description = "";
+  int _rating = 0;
 
   File? galleryFile;
   final picker = ImagePicker();
-
-  @override
-  void initState() {
-    super.initState();
-    _titleController.text = widget.objek.name;
-  }
 
   _showPicker({
     required BuildContext context,
@@ -75,7 +66,7 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
         if (xfilePick != null) {
           galleryFile = File(pickedFile!.path);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+          ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Nothing is selected')));
         }
       },
@@ -84,7 +75,9 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
 
   @override
   void dispose() {
-    _titleController.dispose(); // Dispose of controller when widget is removed
+    _titleController.dispose();
+    _ratingController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -92,14 +85,16 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
     debugPrint(_title);
   }
 
-  Future<void> _updateDataWithImage(BuildContext context) async {
+  Future<void> _postDataWithImage(BuildContext context) async {
     if (galleryFile == null) {
-      return; // Handle case where no image is selected
+      return;
     }
 
-    var request = MultipartRequest(
-        'POST', Uri.parse('${Endpoints.datas}/${widget.objek.idDatas}'));
-    request.fields['name'] = _titleController.text; // Add other data fields
+    var request =
+        MultipartRequest('POST', Uri.parse(Endpoints.datasuts));
+    request.fields['title_issues'] = _titleController.text;
+    request.fields['description_issues'] = _descriptionController.text;
+    request.fields['rating'] = _ratingController.text.toString();
 
     var multipartFile = await MultipartFile.fromPath(
       'image',
@@ -108,11 +103,9 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
     request.files.add(multipartFile);
 
     request.send().then((response) {
-      // Handle response (success or error)
       if (response.statusCode == 201) {
         debugPrint('Data and image posted successfully!');
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => DatasScreen()));
+        Navigator.of(context).pop();
       } else {
         debugPrint('Error posting data: ${response.statusCode}');
       }
@@ -127,9 +120,8 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
         title: null,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white), // recolor the icon
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      // ignore: sized_box_for_whitespace
       body: Container(
         width: double.infinity,
         child: Column(
@@ -199,21 +191,17 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: Colors.grey.shade200))),
-                                width: double.infinity, // Fill available space
-                                height: 150, // Adjust height as needed
-                                // color: Colors.grey[200], // Placeholder color
+                                width: double.infinity,
+                                height: 150,
                                 child: galleryFile == null
                                     ? Center(
-                                        child: Image.network(
-                                          width: 200,
-                                          Uri.parse(
-                                                  '${Endpoints.baseURLLive}/public/${widget.objek.imageUrl!}')
-                                              .toString(),
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  const Icon(Icons.error),
-                                        ),
-                                      )
+                                        child: Text('Pick your Image here',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              color: const Color.fromARGB(
+                                                  255, 124, 122, 122),
+                                              fontWeight: FontWeight.w500,
+                                            )))
                                     : Center(
                                         child: Image.file(galleryFile!),
                                       ),
@@ -232,10 +220,47 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
                                     hintStyle: TextStyle(color: Colors.grey),
                                     border: InputBorder.none),
                                 onChanged: (value) {
-                                  // Update state on text change
                                   setState(() {
-                                    _title =
-                                        value; // Update the _title state variable
+                                    _title = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.grey.shade200))),
+                              child: TextField(
+                                controller: _ratingController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                    hintText: "Rating",
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    border: InputBorder.none),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _rating = int.tryParse(value) ?? 0;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.grey.shade200))),
+                              child: TextField(
+                                controller: _descriptionController,
+                                decoration: const InputDecoration(
+                                    hintText: "Description",
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    border: InputBorder.none),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _description = value;
                                   });
                                 },
                               ),
@@ -255,7 +280,7 @@ class _FormUpdateScreenState extends State<FormUpdateScreen> {
         backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
         tooltip: 'Increment',
         onPressed: () {
-          _updateDataWithImage(context);
+          _postDataWithImage(context);
         },
         child: const Icon(Icons.save, color: Colors.white, size: 28),
       ),

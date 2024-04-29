@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/components/asset_image_rounded.dart';
+import 'package:my_app/screens/customerservice_screen.dart';
 import 'package:my_app/screens/recap_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/recently_screen.dart';
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
         '/new-screen': (context) => const NewsScreen(),
         '/book-screen': (context) => const BooksScreen(),
         '/data-screen':(context) => const DatasScreen(),
+        '/cust-screen':(context) => const CustomerServiceScreen(),
+        '/recap-screen':(context) => const RecapScreen(),
 
       },
     );
@@ -113,7 +116,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               onTap: () => Navigator.pushNamed(context, '/data-screen'),
-            )
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
+                'UTS',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/cust-screen'),
+            ),
           ],
         ),
       ),
