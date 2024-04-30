@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+//import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_app/endpoints/endpoints.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:my_app/screens/customerservice_screen.dart';
 
 class CustFormScreen extends StatefulWidget {
   const CustFormScreen({Key? key}) : super(key: key);
@@ -14,19 +17,22 @@ class CustFormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<CustFormScreen> {
   final _titleController = TextEditingController();
-  final _ratingController = TextEditingController();
+  // final _ratingController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  String _title = "";
-  String _description = "";
-  int _rating = 0;
-
-  File? galleryFile;
+  // String _title = "";
+  // String _description = "";
+  // // double _rating = 0;
+  File? _galleryFile;
   final picker = ImagePicker();
 
-  _showPicker({
-    required BuildContext context,
-  }) {
+  List<String> divisions = ['IT', 'Billing', 'Helpdesk'];
+  String? _selectedDivision;
+
+  List<String> priority = ['High', 'Medium', 'Low'];
+  String? _selectedPriority;
+
+  _showPicker({required BuildContext context}) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -64,7 +70,7 @@ class _FormScreenState extends State<CustFormScreen> {
     setState(
       () {
         if (xfilePick != null) {
-          galleryFile = File(pickedFile!.path);
+          _galleryFile = File(pickedFile!.path);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Nothing is selected')));
@@ -73,39 +79,28 @@ class _FormScreenState extends State<CustFormScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _ratingController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
-
-  saveData() {
-    debugPrint(_title);
-  }
-
   Future<void> _postDataWithImage(BuildContext context) async {
-    if (galleryFile == null) {
-      return;
+    if (_galleryFile == null || _titleController.text.isEmpty) {
+      return; // Handle case where no image or title is provided
     }
 
-    var request =
-        MultipartRequest('POST', Uri.parse(Endpoints.datasuts));
+    var request = MultipartRequest('POST', Uri.parse(Endpoints.datasuts));
     request.fields['title_issues'] = _titleController.text;
     request.fields['description_issues'] = _descriptionController.text;
-    request.fields['rating'] = _ratingController.text.toString();
+    request.fields['rating'] = rating.toString();
 
     var multipartFile = await MultipartFile.fromPath(
       'image',
-      galleryFile!.path,
+      _galleryFile!.path,
     );
     request.files.add(multipartFile);
 
     request.send().then((response) {
+      // Handle response (success or error)
       if (response.statusCode == 201) {
         debugPrint('Data and image posted successfully!');
-        Navigator.of(context).pop();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const CustomerServiceScreen()));
       } else {
         debugPrint('Error posting data: ${response.statusCode}');
       }
@@ -113,9 +108,23 @@ class _FormScreenState extends State<CustFormScreen> {
   }
 
   @override
+  void dispose() {
+    _titleController.dispose(); // Dispose of controller when widget is removed
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  double rating = 0;
+  void ratingUpdate(double userRating) {
+    setState(() {
+      rating = userRating;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade900,
+      backgroundColor: Colors.indigo,
       appBar: AppBar(
         title: null,
         backgroundColor: Colors.transparent,
@@ -133,7 +142,7 @@ class _FormScreenState extends State<CustFormScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Create datas",
+                    "Create Issue",
                     style: GoogleFonts.poppins(
                       fontSize: 32,
                       color: Colors.white,
@@ -144,7 +153,7 @@ class _FormScreenState extends State<CustFormScreen> {
                     height: 2,
                   ),
                   Text(
-                    "Fill the datas below, make sure you add titles and upload the images",
+                    "Fill the datas below, make sure you add titles, description, rating and upload the images",
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       color: Colors.white,
@@ -176,7 +185,7 @@ class _FormScreenState extends State<CustFormScreen> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: const [
                               BoxShadow(
-                                  color: Color.fromRGBO(225, 95, 27, .3),
+                                  color: Colors.indigo,
                                   blurRadius: 20,
                                   offset: Offset(0, 10))
                             ]),
@@ -190,20 +199,23 @@ class _FormScreenState extends State<CustFormScreen> {
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: Colors.grey.shade200))),
+                                            color: Colors.indigo))),
                                 width: double.infinity,
                                 height: 150,
-                                child: galleryFile == null
+                                child: _galleryFile == null
                                     ? Center(
-                                        child: Text('Pick your Image here',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 14,
-                                              color: const Color.fromARGB(
-                                                  255, 124, 122, 122),
-                                              fontWeight: FontWeight.w500,
-                                            )))
+                                        child: Text(
+                                          'Pick your Image here',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            color: const Color.fromARGB(
+                                                255, 124, 122, 122),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
                                     : Center(
-                                        child: Image.file(galleryFile!),
+                                        child: Image.file(_galleryFile!),
                                       ),
                               ),
                             ),
@@ -212,18 +224,14 @@ class _FormScreenState extends State<CustFormScreen> {
                               decoration: BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: Colors.grey.shade200))),
+                                          color: Colors.indigo))),
                               child: TextField(
                                 controller: _titleController,
                                 decoration: const InputDecoration(
-                                    hintText: "Title of Image",
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    border: InputBorder.none),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _title = value;
-                                  });
-                                },
+                                  hintText: "Title",
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                ),
                               ),
                             ),
                             Container(
@@ -231,40 +239,89 @@ class _FormScreenState extends State<CustFormScreen> {
                               decoration: BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: Colors.grey.shade200))),
-                              child: TextField(
-                                controller: _ratingController,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                    hintText: "Rating",
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    border: InputBorder.none),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _rating = int.tryParse(value) ?? 0;
-                                  });
-                                },
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.grey.shade200))),
+                                          color: Colors.indigo))),
                               child: TextField(
                                 controller: _descriptionController,
                                 decoration: const InputDecoration(
-                                    hintText: "Description",
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    border: InputBorder.none),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _description = value;
-                                  });
-                                },
+                                  hintText: "Description",
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text('Give The Rating!',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                            RatingBar(
+                              minRating: 1,
+                              maxRating: 5,
+                              allowHalfRating: false,
+                              ratingWidget: RatingWidget(
+                                full: const Icon(
+                                  Icons.star,
+                                  color: Colors.indigo,
+                                ),
+                                half: const Icon(
+                                  Icons.star_half,
+                                  color: Colors.indigo,
+                                ),
+                                empty: const Icon(
+                                  Icons.star_border,
+                                  color: Colors.indigo,
+                                ),
+                              ),
+                              onRatingUpdate: ratingUpdate,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('Division'),
+                                    DropdownButton<String>(
+                                      value: _selectedDivision,
+                                      items: divisions.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _selectedDivision = newValue;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text('Priority'),
+                                    DropdownButton<String>(
+                                      value: _selectedPriority,
+                                      items: priority.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _selectedPriority = newValue;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -277,8 +334,8 @@ class _FormScreenState extends State<CustFormScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
-        tooltip: 'Increment',
+        backgroundColor: Colors.indigo,
+        tooltip: 'Save',
         onPressed: () {
           _postDataWithImage(context);
         },
