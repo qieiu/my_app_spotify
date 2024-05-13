@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/components/asset_image_rounded.dart';
+import 'package:my_app/cubit/counter_cubit.dart';
+import 'package:my_app/screens/WelcomeScreen/welcome_screen.dart';
 import 'package:my_app/screens/customerservice_screen.dart';
 import 'package:my_app/screens/recap_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
@@ -9,8 +12,7 @@ import 'package:my_app/screens/routes/DatasScreen/datas_screen.dart';
 import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
 import 'package:my_app/screens/premium_screen.dart';
 import 'package:my_app/screens/album_screen.dart';
-
-
+import 'package:my_app/screens/CounterScreen/CounterScreen/counter_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,8 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+  return MultiBlocProvider(
+    providers: [
+        BlocProvider<CounterCubit>(create: (context) => CounterCubit())
+    ],
+    child: MaterialApp(
+    title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
@@ -36,9 +42,11 @@ class MyApp extends StatelessWidget {
         '/data-screen':(context) => const DatasScreen(),
         '/cust-screen':(context) => const CustomerServiceScreen(),
         '/recap-screen':(context) => const RecapScreen(),
-
+        '/counter-screen':(context) => const CounterScreen(),
+        '/welcome-screen':(context) => const WelcomeScreen(),
       },
-    );
+    ),
+  );
   }
 }
 
@@ -124,6 +132,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               onTap: () => Navigator.pushNamed(context, '/cust-screen'),
+            ),
+             ListTile(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
+                'Counter Screen',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/counter-screen'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
+                'Welcome Screen',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/welcome-screen'),
             ),
           ],
         ),
