@@ -7,9 +7,13 @@ class CounterCubit extends Cubit<CounterState> {
   CounterCubit() : super(const CounterInitialState());
 
   void increment() {
-    emit(CounterState(counter: state.counter +1));
+    final int newCounter = state.counter + 1;
+    final String newStatus = newCounter % 2 == 0 ? "Genap" : "Ganjil";
+    emit(CounterState(counter: newCounter, status: newStatus));
   }
   void decrement() {
-    emit(CounterState(counter: state.counter -1));
+     final int newCounter = state.counter + 1;
+    final String newStatus = newCounter % 2 == 0 ? "Genap" : "Ganjil";
+    emit(CounterState(counter: newCounter, status: newStatus));
   }
 }
