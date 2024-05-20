@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/components/asset_image_rounded.dart';
+import 'package:my_app/cubit/balance_cubit.dart';
 import 'package:my_app/cubit/counter_cubit.dart';
+import 'package:my_app/screens/routes/SpendingScreen/spending_screen.dart';
 import 'package:my_app/screens/WelcomeScreen/welcome_screen.dart';
 import 'package:my_app/screens/customerservice_screen.dart';
 import 'package:my_app/screens/recap_screen.dart';
 import 'package:my_app/screens/news_screen.dart';
 import 'package:my_app/screens/recently_screen.dart';
+import 'package:my_app/screens/BalanceScreen/balance_screen.dart';
 import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
 import 'package:my_app/screens/routes/DatasScreen/datas_screen.dart';
 import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
@@ -25,7 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
   return MultiBlocProvider(
     providers: [
-        BlocProvider<CounterCubit>(create: (context) => CounterCubit())
+        BlocProvider<CounterCubit>(create: (context) => CounterCubit()),
+        BlocProvider<BalanceCubit>(create: (context) => BalanceCubit())
     ],
     child: MaterialApp(
     title: 'Flutter Demo',
@@ -44,6 +48,8 @@ class MyApp extends StatelessWidget {
         '/recap-screen':(context) => const RecapScreen(),
         '/counter-screen':(context) => const CounterScreen(),
         '/welcome-screen':(context) => const WelcomeScreen(),
+        '/balance-screen':(context) => const BalanceScreen(),
+        '/spending-screen':(context) => const SpendingScreen()
       },
     ),
   );
@@ -148,6 +154,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               onTap: () => Navigator.pushNamed(context, '/welcome-screen'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
+                'Balance Screen',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/balance-screen'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_file),
+              title: const Text(
+                'Spending Screen',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/spending-screen'),
             ),
           ],
         ),

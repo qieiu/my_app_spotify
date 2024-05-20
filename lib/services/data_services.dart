@@ -1,8 +1,10 @@
 import 'package:http/http.dart' as http;
+import 'package:my_app/dto/balances.dart';
 import 'package:my_app/dto/custservice.dart';
 import 'package:my_app/dto/data_screen.dart';
 import 'dart:convert';
 import 'package:my_app/dto/news.dart';
+import 'package:my_app/dto/spending.dart';
 import 'package:my_app/endpoints/endpoints.dart';
 
 class DataService {
@@ -80,5 +82,47 @@ class DataService {
     // kalu tidak jalan hubungi yang berkepentingan seperti tuhan, atau ganti id jadi String
     await http.delete(Uri.parse('${Endpoints.datasuts}/$id'),
         headers: {'Content-type': 'application/json'});
+  }
+
+  // get balance
+  static Future<List<Balances>> fetchBalances() async {
+    final response = await http.get(Uri.parse(Endpoints.balance));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      return (data['datas'] as List<dynamic>)
+      .map((item) => Balances.fromJson(item as Map<String, dynamic>))
+      .toList();
+    } else {
+      // handle error
+      throw Exception('Failed to load data');
+    }
+  }
+
+  // get spending
+  static Future<List<Spendings>> fetchSpendings() async {
+    final response = await http.get(Uri.parse(Endpoints.spending));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      return (data['datas'] as List<dynamic>)
+      .map((item) => Spendings.fromJson(item as Map<String, dynamic>))
+      .toList();
+    } else {
+      // handle error
+      throw Exception('Failed to load data');
+    }
+  }
+
+  // post spending 
+  static Future<http.Response> sendSpendingData(int spending) async {
+    final url = Uri.parse(Endpoints.spending);
+    final data = {'spending': spending};
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+
+    return response;
   }
 }

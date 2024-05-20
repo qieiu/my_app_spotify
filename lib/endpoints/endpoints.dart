@@ -8,4 +8,6 @@ class Endpoints {
   // ignore: constant_identifier_names
   static const String datasuts =
       "$baseURLLive/api/customer-service/2215091055";
+  static const String balance = "$baseURLLive/api/balance/2215091055";
+  static const String spending = "$baseURLLive/api/spending/2215091055";
 }
