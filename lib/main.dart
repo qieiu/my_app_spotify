@@ -16,6 +16,7 @@ import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
 import 'package:my_app/screens/premium_screen.dart';
 import 'package:my_app/screens/album_screen.dart';
 import 'package:my_app/screens/CounterScreen/CounterScreen/counter_screen.dart';
+import 'package:my_app/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: const MyHomePage(title: 'Home Screen'),
+      home: LoginApp(),
       routes: {
         '/custom-screen': (context) => const RecentlyScreen(),
         '/second-screen': (context) => const SecondScreen(),
