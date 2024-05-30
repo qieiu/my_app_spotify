@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/components/asset_image_rounded.dart';
+import 'package:my_app/components/auth_wrapper.dart';
+import 'package:my_app/cubit/auth_cubit.dart';
 import 'package:my_app/cubit/balance_cubit.dart';
 import 'package:my_app/cubit/counter_cubit.dart';
 import 'package:my_app/screens/routes/SpendingScreen/spending_screen.dart';
@@ -17,6 +19,10 @@ import 'package:my_app/screens/premium_screen.dart';
 import 'package:my_app/screens/album_screen.dart';
 import 'package:my_app/screens/CounterScreen/CounterScreen/counter_screen.dart';
 import 'package:my_app/screens/login.dart';
+import 'package:my_app/services/data_services.dart';
+import 'package:my_app/utils/constants.dart';
+import 'package:my_app/utils/secure_storage_util.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +36,8 @@ class MyApp extends StatelessWidget {
   return MultiBlocProvider(
     providers: [
         BlocProvider<CounterCubit>(create: (context) => CounterCubit()),
-        BlocProvider<BalanceCubit>(create: (context) => BalanceCubit())
+        BlocProvider<BalanceCubit>(create: (context) => BalanceCubit()),
+        BlocProvider(create: (context) => AuthCubit())
     ],
     child: MaterialApp(
     title: 'Flutter Demo',
@@ -49,8 +56,9 @@ class MyApp extends StatelessWidget {
         '/recap-screen':(context) => const RecapScreen(),
         '/counter-screen':(context) => const CounterScreen(),
         '/welcome-screen':(context) => const WelcomeScreen(),
-        '/balance-screen':(context) => const BalanceScreen(),
-        '/spending-screen':(context) => const SpendingScreen()
+        '/balance-screen':(context) => const AuthWrapper(child: BalanceScreen()),
+        '/spending-screen':(context) => const AuthWrapper(child: SpendingScreen()),
+        '/login-screen':(Context) => LoginApp()
       },
     ),
   );
@@ -86,6 +94,22 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
     });
   }
+
+  void navigateAndCloseDrawer(BuildContext context, String routeName) {
+    if (Scaffold.of(context).isDrawerOpen) {
+      Navigator.pop(context); // Close the drawer first
+    }
+    Navigator.pushNamed(context, routeName);
+  }
+
+Future<void> doLogout(context) async {
+  debugPrint("need logout");
+  final response = await DataService.logoutData();
+  if (response.statusCode == 200) {
+    await SecureStorageUtil.storage.delete(key: tokenStoreName);
+    Navigator.pushReplacementNamed(context, "/login-screen");
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +196,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () => Navigator.pushNamed(context, '/spending-screen'),
             ),
+            ListTile(
+         title: const Text('Logout'),
+         onTap: () {
+          doLogout(context);
+          }
+      ),
           ],
         ),
       ),

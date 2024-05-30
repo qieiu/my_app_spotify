@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_app/dto/balances.dart';
 import 'package:my_app/dto/custservice.dart';
@@ -6,6 +7,8 @@ import 'dart:convert';
 import 'package:my_app/dto/news.dart';
 import 'package:my_app/dto/spending.dart';
 import 'package:my_app/endpoints/endpoints.dart';
+import 'package:my_app/utils/constants.dart';
+import 'package:my_app/utils/secure_storage_util.dart';
 
 class DataService {
   static Future<List<News>> fetchNews() async {
@@ -125,4 +128,34 @@ class DataService {
 
     return response;
   }
+
+static Future<http.Response> sendLoginData(
+  String email, String password) async {
+    final url = Uri.parse(Endpoints.login);
+    final data = {'email': email, 'password': password};
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+      );
+
+      return response;
+  }
+  static Future<http.Response> logoutData() async {
+    final url = Uri.parse(Endpoints.logout); 
+    final String? accessToken =
+      await SecureStorageUtil.storage.read(key: tokenStoreName);
+    debugPrint("logout with $accessToken");
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+    return response;
+  }
+
 }
